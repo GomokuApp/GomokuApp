@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            var gameId = '{{ game_id }}';
+        </script>
+        <script src="/static/gomoku/script.js"></script>
+        <link rel="stylesheet" href="/static/gomoku/style.css">
+    </head>
+    <body>
+        <div class="sidebar">
+            Test
+        </div>
+        <div class="game">
+            <div class="board">
+                <img src="/static/gomoku/board.png" align="middle">
+                <table class="triggers">
+                    <tbody>
+                        {%for i in range(15)%}
+                        <tr>
+                            {%for j in range(15)%}
+                            <td>
+                                <a onclick="placePiece({{ i ~ ", " ~ j }})">
+                                    <img class="piece" src="/static/gomoku/pieces/none.png">
+                                </a>
+                            </td>
+                            {%endfor%}
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+            <div class="game-menu">
+                {%for i in range(2)%}
+                <div class="player-display">
+                    <div class="avatar">
+                        <img src="/static/gomoku/avatar/default.png">
+                    </div>
+                    {% if i == 0: %}
+                    <div class="player-display-property player-display-property-black">
+                    {% else %}
+                    <div class="player-display-property player-display-property-white">
+                    {% endif %}
+
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </body>
+</html>

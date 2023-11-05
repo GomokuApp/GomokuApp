@@ -1,0 +1,173 @@
+:root {
+    --portrait-side-bar-min-short-side-length: 300px;
+
+    --board-size: min(90vmin, calc(100vmax - var(--portrait-side-bar-min-short-side-length) - 10vmin));
+    --board-padding: 4vmin;
+
+    --side-bar-board-padding-ratio: 2;
+    --game-menu-short-side-length: calc(100vmax - var(--board-size) - (var(--side-bar-board-padding-ratio) + 2) * var(--board-padding));;
+    --game-menu-long-side-length: 100vmin;
+    --game-menu-top-or-left: calc(50vmin - var(--board-padding) - var(--board-size) / 2);
+
+    --player-display-real-side-length: min(var(--player-display-long-side-length), var(--player-display-max-long-side-length));
+
+    --player-display-aspect-ratio: 1.25;
+
+    --player-display-property-height: calc(var(--player-display-real-side-length) - (var(--player-display-real-side-length) / var(--player-display-aspect-ratio)) - var(--board-padding) / 2);
+}
+
+@media screen and (orientation:landscape) {
+    :root {
+        --player-display-long-side-length: calc((var(--game-menu-short-side-length) - var(--board-padding) * 2) * var(--player-display-aspect-ratio));
+        --player-display-max-long-side-length: calc((50vmin - var(--board-padding) * 2));
+    }
+
+    .game-menu {
+        float: right;
+        width: var(--game-menu-short-side-length);
+        position: relative;
+        top: calc(50vmin - (var(--player-display-real-side-length) + 2 * var(--board-padding)));
+    }
+
+    .board {
+        top: var(--game-menu-top-or-left);
+        position: relative;
+    }
+
+    .player-display {
+        height: var(--player-display-long-side-length);
+        max-height: var(--player-display-max-long-side-length);
+    }
+
+    .sidebar {
+        height: 100vmin;
+        width: calc(var(--side-bar-board-padding-ratio) * var(--board-padding));
+        float: left;
+    }
+
+    .game {
+        float: right;
+        height: 100vmin;
+    }
+}
+
+@media screen and (orientation:portrait) {
+    :root {
+        --player-display-long-side-length: calc((var(--game-menu-short-side-length) - var(--board-padding) * 2));
+        --player-display-max-long-side-length: calc((50vmin - var(--board-padding) * 2) * var(--player-display-aspect-ratio));
+    }
+
+    .game-menu {
+        height: var(--game-menu-short-side-length);
+        width: var(--game-menu-long-side-length);
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .board {
+        left: var(--game-menu-top-or-left);
+        position: relative;
+    }
+
+    .player-display {
+        height: var(--player-display-long-side-length);
+        max-height : var(--player-display-max-long-side-length);
+    }
+
+    .sidebar {
+        width: 100vmin;
+        height: calc(var(--side-bar-board-padding-ratio) * var(--board-padding));
+    }
+}
+
+.sidebar {
+    background: rgb(222, 197, 106);
+}
+
+body {
+    margin: 0;
+    background-color: rgb(243, 215, 111);
+}
+
+.board {
+    width: var(--board-size);
+    height: var(--board-size);
+    padding: var(--board-padding);
+    float: left;
+}
+
+.triggers tbody {
+    height: 100%;
+    width: 100%;
+}
+
+.board img{
+    width: 100%;
+    height: 100%;
+}
+
+img.piece {
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.player-display {
+    display: inline-block;
+    margin: var(--board-padding);
+    aspect-ratio: 1 / var(--player-display-aspect-ratio);
+    background: rgb(222, 197, 106);
+    float: right;
+}
+
+.player-display-property {
+    margin: calc(var(--board-padding) / 2);
+    border: solid;
+    height: var(--player-display-property-height);
+}
+
+.player-display-property p {
+    float: left;
+    margin: 0;
+    margin-top: calc(var(--player-display-property-height) / 4);
+    font-size: calc(var(--player-display-property-height) / 2 - 1px); /*1px correction, IDK why is this even needed*/
+}
+
+.player-display-property img {
+    margin: calc(var(--player-display-property-height) / 4);
+    float: right;
+    position: relative;
+    height: 50%;
+}
+
+.player-display-property a {
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table.triggers {
+    position: relative;
+    top: -100%;
+    min-width: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+.avatar {
+    aspect-ratio: 1;
+    margin: calc(var(--board-padding) / 2);
+    border: solid;
+}
+
+
+.avatar img {
+    width: 100%;
+    vertical-align: middle;
+}
+
+
