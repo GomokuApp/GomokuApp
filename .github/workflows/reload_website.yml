@@ -1,0 +1,11 @@
+name: GitHub Actions Demo
+run-name: Reload the website 🚀
+on: [push]
+jobs:
+  reload:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'http://ruochenfu.pythonanywhere.com/reload-website'
