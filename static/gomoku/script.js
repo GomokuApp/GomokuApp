@@ -42,7 +42,7 @@ function refreshScreen(data) {
         if (ip != null) {
             document.getElementsByClassName("player-display-property-" + color)[0].innerHTML =`
                 <p>`+ ip +`</p>
-                <img src="/static/gomoku/pieces/` + color +`.png">
+                <img src="/static/gomoku/pieces/` + color +`.png" alt="Piece">
                 `
         } else {
             document.getElementsByClassName("player-display-property-" + color)[0].innerHTML = `

@@ -6,6 +6,7 @@
         </script>
         <script src="/static/gomoku/script.js"></script>
         <link rel="stylesheet" href="/static/gomoku/style.css">
+        <title></title>
     </head>
     <body>
         <div class="sidebar">
@@ -13,7 +14,7 @@
         </div>
         <div class="game">
             <div class="board">
-                <img src="/static/gomoku/board.png" align="middle">
+                <img src="/static/gomoku/board.png" alt="Game board">
                 <table class="triggers">
                     <tbody>
                         {%for i in range(15)%}
@@ -21,7 +22,7 @@
                             {%for j in range(15)%}
                             <td>
                                 <a onclick="placePiece({{ i ~ ", " ~ j }})">
-                                    <img class="piece" src="/static/gomoku/pieces/none.png">
+                                    <img class="piece" src="/static/gomoku/pieces/none.png" alt="Game piece">
                                 </a>
                             </td>
                             {%endfor%}
