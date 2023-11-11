@@ -2,6 +2,12 @@ function refresh() {
     fetch("/gomoku/api/"+ gameId + "/refresh")
             .then(response => response.json())
             .then(refreshScreen);
+
+    const board = $('.board');
+
+    board.css({
+        'height': board.width() + 'px'
+    });
 }
 
 function renderPiece(row, column, color) {

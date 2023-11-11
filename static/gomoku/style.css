@@ -26,12 +26,15 @@
         float: right;
         width: var(--game-menu-short-side-length);
         position: relative;
-        top: calc(50vmin - (var(--player-display-real-side-length) + 2 * var(--board-padding)));
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .board {
-        top: var(--game-menu-top-or-left);
+        /*top: var(--game-menu-top-or-left);*/
         position: relative;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .player-display {
@@ -80,20 +83,26 @@
         width: 100vmin;
         height: calc(var(--side-bar-board-padding-ratio) * var(--board-padding));
     }
+
+    body {
+        flex-direction: column;
+    }
 }
 
 .sidebar {
     background: rgb(222, 197, 106);
+    flex: none;
 }
 
 body {
     margin: 0;
     background-color: rgb(243, 215, 111);
+    display: flex;
 }
 
 .board {
-    width: var(--board-size);
-    height: var(--board-size);
+    /*width: var(--board-size);*/
+    /*height: var(--board-size);*/
     padding: var(--board-padding);
     float: left;
 }
@@ -168,6 +177,15 @@ table.triggers {
 .avatar img {
     width: 100%;
     vertical-align: middle;
+}
+
+.game {
+    display: flex;
+}
+
+.game-menu {
+    flex: none;
+    height: fit-content;
 }
 
 

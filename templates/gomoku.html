@@ -4,6 +4,7 @@
         <script>
             const gameId = '{{ game_id }}';
         </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="/static/gomoku/script.js"></script>
         <link rel="stylesheet" href="/static/gomoku/style.css">
         <title></title>
@@ -37,7 +38,6 @@
                     <div class="avatar">
                         <img src="/static/gomoku/avatar/default.png" alt="Player Avatar">
                     </div>
-
                     <div class="player-display-property player-display-property-{{ "black" if i == 0 else "white" }}"></div>
                 </div>
                 {%endfor%}
