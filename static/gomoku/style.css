@@ -5,9 +5,8 @@
     --board-padding: 4vmin;
 
     --side-bar-board-padding-ratio: 2;
-    --game-menu-short-side-length: calc(100vmax - var(--board-size) - (var(--side-bar-board-padding-ratio) + 2) * var(--board-padding));;
+    --game-menu-short-side-length: calc(100vmax - var(--board-size) - (var(--side-bar-board-padding-ratio) + 2) * var(--board-padding));
     --game-menu-long-side-length: 100vmin;
-    --game-menu-top-or-left: calc(50vmin - var(--board-padding) - var(--board-size) / 2);
 
     --player-display-real-side-length: min(var(--player-display-long-side-length), var(--player-display-max-long-side-length));
 
@@ -61,17 +60,14 @@
     }
 
     .game-menu {
-        height: var(--game-menu-short-side-length);
-        width: var(--game-menu-long-side-length);
         display: flex;
         justify-content: center;
-        position: absolute;
-        bottom: 0;
     }
 
     .board {
-        left: var(--game-menu-top-or-left);
-        position: relative;
+        overflow: hidden;
+        align-self: center;
+        max-height: calc(100vmin - 2 * var(--board-padding));
     }
 
     .player-display {
@@ -80,11 +76,10 @@
     }
 
     .sidebar {
-        width: 100vmin;
         height: calc(var(--side-bar-board-padding-ratio) * var(--board-padding));
     }
 
-    body {
+    .content {
         flex-direction: column;
     }
 }
@@ -94,20 +89,16 @@
     flex: none;
 }
 
-body {
-    margin: 0;
+.content {
     background-color: rgb(243, 215, 111);
     display: flex;
 }
 
 .board {
-    /*width: var(--board-size);*/
-    /*height: var(--board-size);*/
     padding: var(--board-padding);
-    float: left;
 }
 
-.triggers tbody {
+.triggers t.content {
     height: 100%;
     width: 100%;
 }
@@ -188,4 +179,12 @@ table.triggers {
     height: fit-content;
 }
 
+body {
+    margin: 0;
+    background-color: rgb(243, 215, 111);
+}
+
+.content {
+    height: 100vh;
+}
 

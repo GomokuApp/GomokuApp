@@ -5,9 +5,17 @@ function refresh() {
 
     const board = $('.board');
 
-    board.css({
-        'height': board.width() + 'px'
-    });
+    if (window.matchMedia("(orientation:landscape)").matches) {
+        board.css({
+            'width': '',
+            'height': board.width() + 'px'
+        });
+    } else {
+        board.css({
+            'width': board.height() + 'px',
+            'height': ''
+        });
+    }
 }
 
 function renderPiece(row, column, color) {
