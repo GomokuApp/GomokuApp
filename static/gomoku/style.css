@@ -23,7 +23,7 @@
 
     .game-menu {
         float: right;
-        width: var(--game-menu-short-side-length);
+        flex-direction: column;
         position: relative;
         top: 50%;
         transform: translateY(-50%);
@@ -60,7 +60,6 @@
     }
 
     .game-menu {
-        display: flex;
         justify-content: center;
     }
 
@@ -175,6 +174,7 @@ table.triggers {
 }
 
 .game-menu {
+    display: flex;
     flex: none;
     height: fit-content;
 }
