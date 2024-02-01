@@ -6,6 +6,7 @@ from secrets import token_hex
 from enum import Enum
 from time import time
 from typing import Optional
+from urllib.parse import quote
 
 gomoku: Blueprint = Blueprint('gomoku', __name__)
 
@@ -42,14 +43,6 @@ class GomokuGame:
     def add_player(self, player, color) -> None:
         if not self.ended:
             self.online_players[color] = player
-
-    def contains_player(self, ip) -> bool:
-        for color, player in self.online_players.items():
-            if player is None:
-                continue
-            if player.ip == ip:
-                return True
-        return False
 
     def refresh_player(self, ip) -> None:
         if not self.ended:
@@ -134,7 +127,7 @@ def create_game_for_player(game_id) -> GomokuGame:
 @gomoku.route('/<game_id>')
 def gomoku_game(game_id):
     create_game_for_player(game_id)
-    return render_template("gomoku.html", game_id=game_id)
+    return render_template("gomoku.html", game_id=game_id, url=quote(request.full_path))
 
 
 @gomoku.route('/')
