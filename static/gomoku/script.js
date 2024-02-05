@@ -56,24 +56,35 @@ function refreshScreen(data) {
     for (const [color, user] of Object.entries(currentPlayers)) {
         let display = document.getElementsByClassName("player-display-property-" + color)[0];
         if (user != null) {
-            display.innerHTML =`
+            let inner = `
                 <p>`+ user.displayed_name +`</p>
                 <img src="/static/gomoku/pieces/` + color +`.png" alt="Piece">
                 `
+            if (display.innerHTML !== inner)
+                display.innerHTML = inner
 
-            document.getElementsByClassName("avatar-" + color)[0].innerHTML =`
+            let avatar = `
                 <img src="` + user.profile_picture + `" alt="Player Avatar">
                 `
+
+            if (document.getElementsByClassName("avatar-" + color)[0].innerHTML !== avatar)
+                document.getElementsByClassName("avatar-" + color)[0].innerHTML = avatar
         } else {
-            display.innerHTML = `
+            let inner = `
                 <a onclick="fetch('/gomoku/api/` + gameId + "/" + color + `/join')">
                     Join as ` + color + `
                 </a>
             `
 
-            document.getElementsByClassName("avatar-" + color)[0].innerHTML =`
+            if (display.innerHTML !== inner)
+                display.innerHTML = inner
+
+            let avatar = `
                 <img src="/static/gomoku/avatar/default.png" alt="Player Avatar">
                 `
+
+            if (document.getElementsByClassName("avatar-" + color)[0].innerHTML !== avatar)
+                document.getElementsByClassName("avatar-" + color)[0].innerHTML = avatar
         }
 
         if (currentTurn === color)
