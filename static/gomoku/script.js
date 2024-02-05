@@ -52,10 +52,10 @@ function refreshScreen(data) {
         }
     }
 
-    for (const [color, ip] of Object.entries(currentPlayers)) {
-        if (ip != null) {
+    for (const [color, name] of Object.entries(currentPlayers)) {
+        if (name != null) {
             document.getElementsByClassName("player-display-property-" + color)[0].innerHTML =`
-                <p>`+ ip +`</p>
+                <p>`+ name +`</p>
                 <img src="/static/gomoku/pieces/` + color +`.png" alt="Piece">
                 `
         } else {

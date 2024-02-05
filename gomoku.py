@@ -1,7 +1,7 @@
 # A very simple Flask Hello World game for you to get started with...
 
 from flask import Blueprint, render_template, redirect, request, jsonify
-from util import Player
+from user import User, GuestUser, get_current_user
 from secrets import token_hex
 from enum import Enum
 from time import time
@@ -20,7 +20,7 @@ class GomokuColor(Enum):
 
 class GomokuGame:
     game_id: str
-    online_players: dict[GomokuColor, Optional[Player]]
+    online_players: dict[GomokuColor, Optional[User]]
     board: list[list[Optional[GomokuColor]]]
     turn: GomokuColor
     ended: bool
@@ -40,17 +40,15 @@ class GomokuGame:
     def is_empty(self) -> bool:
         return not any(self.online_players.values())
 
-    def add_player(self, player, color) -> None:
+    def add_player(self, player: User, color) -> None:
         if not self.ended:
             self.online_players[color] = player
 
-    def refresh_player(self, ip) -> None:
-        if not self.ended:
-            for color, player in self.online_players.items():
-                if player is None:
-                    continue
-                if player.ip == ip:
-                    self.online_players[color].refresh()
+    def refresh_player(self, player: User) -> None:
+        if self.ended:
+            return
+
+        player.refresh()
 
     def remove_offline_players(self) -> None:
         for color, player in self.online_players.items():
@@ -61,15 +59,14 @@ class GomokuGame:
                 continue
 
     def place_piece(self, row, column, color) -> None:
-        if not self.ended:
-            if self.online_players[self.turn] is None:
-                return
-            if self.online_players[self.turn].ip != get_client_ip():
-                return
-            if self.board[row][column] is None:
-                self.board[row][column] = color
-                self.check_wins(row, column)
-                self.turn = GomokuColor.BLACK if self.turn == GomokuColor.WHITE else GomokuColor.WHITE
+        if self.ended:
+            return
+        if self.online_players[self.turn] != get_current_user():
+            return
+        if self.board[row][column] is None:
+            self.board[row][column] = color
+            self.check_wins(row, column)
+            self.turn = GomokuColor.BLACK if self.turn == GomokuColor.WHITE else GomokuColor.WHITE
 
     def check_wins(self, row, column) -> None:
         def is_same(x, y, reference_color):
@@ -138,13 +135,14 @@ def redirect_to_random_game():
 @gomoku.route('/api/<game_id>/refresh')
 def check_online(game_id):
     game = create_game_for_player(game_id)
-    game.refresh_player(get_client_ip())
+    game.refresh_player(get_current_user())  # Get current player?
     possible_client_color = [color for color, player in game.online_players.items() if
-                             player is not None and player.ip == get_client_ip()]
+                             player == get_current_user()]
     status = {
-        "current_players": {color.value: player and player.ip for color, player in game.online_players.items()},
+        "current_players": {color.value: player and player.get_displayed_name() 
+                            for color, player in game.online_players.items()},
         "is_your_turn":
-            game.online_players[game.turn] is not None and game.online_players[game.turn].ip == get_client_ip(),
+            game.online_players[game.turn] != get_current_user(),
         "your_color": possible_client_color[0].value if len(possible_client_color) == 1 else game.turn.value if len(
             possible_client_color) == 2 else None,
         "spectating": get_client_ip() in game.online_players.values(),
@@ -162,7 +160,7 @@ def check_online(game_id):
 @gomoku.route('/api/<game_id>/<color>/join')
 def join_player(game_id, color):
     game = create_game_for_player(game_id)
-    game.add_player(Player(get_client_ip()), GomokuColor(color))
+    game.add_player(get_current_user(), GomokuColor(color))
     return ""
 
 
