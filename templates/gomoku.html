@@ -40,7 +40,7 @@
             <div class="game-menu">
                 {% for i in range(2) %}
                 <div class="player-display">
-                    <div class="avatar">
+                    <div class="avatar avatar-{{ "black" if i == 0 else "white" }}">
                         <img src="/static/gomoku/avatar/default.png" alt="Player Avatar">
                     </div>
                     <div class="player-display-property player-display-property-{{ "black" if i == 0 else "white" }}"></div>

@@ -35,6 +35,7 @@ function refreshScreen(data) {
     isMyTurn = data.is_your_turn
     myColor = data.your_color
     currentPlayers = data.current_players
+    currentTurn = data.current_turn
 
     if (data.ended) {
         alert("Game ended, " + data.won_color + " won")
@@ -52,20 +53,33 @@ function refreshScreen(data) {
         }
     }
 
-    for (const [color, name] of Object.entries(currentPlayers)) {
-        if (name != null) {
-            document.getElementsByClassName("player-display-property-" + color)[0].innerHTML =`
-                <p>`+ name +`</p>
+    for (const [color, user] of Object.entries(currentPlayers)) {
+        let display = document.getElementsByClassName("player-display-property-" + color)[0];
+        if (user != null) {
+            display.innerHTML =`
+                <p>`+ user.displayed_name +`</p>
                 <img src="/static/gomoku/pieces/` + color +`.png" alt="Piece">
                 `
+
+            document.getElementsByClassName("avatar-" + color)[0].innerHTML =`
+                <img src="` + user.profile_picture + `" alt="Player Avatar">
+                `
         } else {
-            document.getElementsByClassName("player-display-property-" + color)[0].innerHTML = `
+            display.innerHTML = `
                 <a onclick="fetch('/gomoku/api/` + gameId + "/" + color + `/join')">
                     Join as ` + color + `
                 </a>
             `
+
+            document.getElementsByClassName("avatar-" + color)[0].innerHTML =`
+                <img src="/static/gomoku/avatar/default.png" alt="Player Avatar">
+                `
         }
 
+        if (currentTurn === color)
+            display.style.backgroundColor = "rgb(215, 184, 71)"
+        else
+            display.style.backgroundColor = null
     }
 }
 

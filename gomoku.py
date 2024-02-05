@@ -78,21 +78,24 @@ class GomokuGame:
 
         for correction in range(5):
             if all([is_same(row - i + correction, column, color) for i in range(5)]):
-                self.ended = True
+                self.set_ended()
                 break
             if all([is_same(row, column - i + correction, color) for i in range(5)]):
-                self.ended = True
+                self.set_ended()
                 break
             if all([is_same(row - i + correction, column - i + correction, color) for i in range(5)]):
-                self.ended = True
+                self.set_ended()
                 break
             if all([is_same(row + i - correction, column - i + correction, color) for i in range(5)]):
-                self.ended = True
+                self.set_ended()
                 break
 
         if self.ended:
             print("GAME ENDED! ", row, ", ", column, ", color: ", color)
             self.won_color = color
+
+    def set_ended(self):
+        self.ended = True
 
 
 gomoku_games: dict[str, GomokuGame] = {}
@@ -139,8 +142,12 @@ def check_online(game_id):
     possible_client_color = [color for color, player in game.online_players.items() if
                              player == get_current_user()]
     status = {
-        "current_players": {color.value: player and player.get_displayed_name() 
+        "current_players": {color.value: player and {
+            "displayed_name": player.get_displayed_name(),
+            "profile_picture": player.get_profile_picture()
+        }
                             for color, player in game.online_players.items()},
+        "current_turn": game.turn.value,
         "is_your_turn":
             game.online_players[game.turn] != get_current_user(),
         "your_color": possible_client_color[0].value if len(possible_client_color) == 1 else game.turn.value if len(

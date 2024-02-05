@@ -1,20 +1,20 @@
 from time import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from flask import session
 import gomoku
 
 
 class User:
-    last_checkin: float
-
-    def __init__(self):
-        self.refresh()
+    last_checkin: float = time()
 
     def refresh(self) -> None:
         self.last_checkin = time()
 
     def get_displayed_name(self) -> str:
         raise NotImplementedError
+
+    def get_profile_picture(self) -> str:
+        return "/static/gomoku/avatar/default.png"
 
 
 @dataclass
@@ -24,27 +24,25 @@ class GuestUser(User):
     def get_displayed_name(self) -> str:
         return self.ip
 
-    def __post_init__(self):
-        super().__init__()
-
 
 @dataclass
 class RegisteredUser(User):
     token: str
-    displayed_name: str
+    displayed_name: str = field(compare=False)
+    profile_picture: str = field(compare=False)
 
     def get_displayed_name(self) -> str:
         return self.displayed_name
 
-    def __hash__(self):
-        return self.token.__hash__()
-
-    def __post_init__(self):
-        super().__init__()
+    def get_profile_picture(self) -> str:
+        return self.profile_picture
 
 
 def get_current_user() -> User:
-    if session["user"]:
+    if session.get("user"):
         print(session["user"])
-        return RegisteredUser(str(session["user"]["access_token"]), str(session["user"]["userinfo"]["name"]))
+        return RegisteredUser(str(session["user"]["access_token"]),
+                              str(session["user"]["userinfo"]["name"]),
+                              str(session["user"]["userinfo"]["picture"])
+                              )
     return GuestUser(gomoku.get_client_ip())
