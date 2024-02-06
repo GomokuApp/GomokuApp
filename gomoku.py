@@ -163,7 +163,6 @@ def check_online(game_id):
 
 @gomoku.route('/api/<game_id>/<color>/join')
 def join_player(game_id, color):
-    print("player tried to join")
     game = get_game(game_id)
     game.add_player(get_current_user(), GomokuColor(color))
     return ""
