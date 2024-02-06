@@ -91,7 +91,6 @@ class GomokuGame:
                 break
 
         if self.ended:
-            print("GAME ENDED! ", row, ", ", column, ", color: ", color)
             self.won_color = color
 
     def set_ended(self):
@@ -115,18 +114,16 @@ def check_offline_player():
             del gomoku_games[code]
 
 
-def create_game_for_player(game_id) -> GomokuGame:
+def get_game(game_id) -> GomokuGame:
     if game_id not in gomoku_games.keys():
         gomoku_games[game_id] = GomokuGame(game_id)
-        print("CREATED GAME " + game_id)
-        print("GAMES: ", gomoku_games)
     game = gomoku_games[game_id]
     return game
 
 
 @gomoku.route('/<game_id>')
 def gomoku_game(game_id):
-    create_game_for_player(game_id)
+    get_game(game_id)
     return render_template("gomoku.html", game_id=game_id, url=quote(request.full_path))
 
 
@@ -137,7 +134,7 @@ def redirect_to_random_game():
 
 @gomoku.route('/api/<game_id>/refresh')
 def check_online(game_id):
-    game = create_game_for_player(game_id)
+    game = get_game(game_id)
     game.refresh_player(get_current_user())  # Get current player?
     possible_client_color = [color for color, player in game.online_players.items() if
                              player == get_current_user()]
@@ -166,14 +163,15 @@ def check_online(game_id):
 
 @gomoku.route('/api/<game_id>/<color>/join')
 def join_player(game_id, color):
-    game = create_game_for_player(game_id)
+    print("player tried to join")
+    game = get_game(game_id)
     game.add_player(get_current_user(), GomokuColor(color))
     return ""
 
 
 @gomoku.route('/api/<game_id>/place_piece/<row>/<column>')
 def place_piece(game_id, row, column):
-    game = create_game_for_player(game_id)
+    game = get_game(game_id)
 
     game.place_piece(int(row), int(column), game.turn)
 
