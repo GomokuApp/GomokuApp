@@ -18,7 +18,13 @@ class User:
 
 
 @dataclass
-class GuestUser(User):
+class BaseUser(User):
+    def __post_init__(self):
+        self.refresh()
+
+
+@dataclass
+class GuestUser(BaseUser):
     ip: str
 
     def get_displayed_name(self) -> str:
@@ -26,7 +32,7 @@ class GuestUser(User):
 
 
 @dataclass
-class RegisteredUser(User):
+class RegisteredUser(BaseUser):
     token: str
     displayed_name: str = field(compare=False)
     profile_picture: str = field(compare=False)
