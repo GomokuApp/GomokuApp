@@ -1,3 +1,5 @@
+Notification.requestPermission()
+
 function refresh() {
     fetch("/gomoku/api/"+ gameId + "/refresh")
             .then(response => response.json())
@@ -19,11 +21,22 @@ function refresh() {
 }
 
 function renderPiece(row, column, color) {
-    document.getElementsByClassName("triggers")[0].children[0]
+    var piece = document.getElementsByClassName("triggers")[0].children[0]
                 .children[row]
                 .children[column]
 
-                .children[0].children[0].setAttribute("src", "/static/gomoku/pieces/" + color + ".png")
+                .children[0].children[0];
+    if (piece.getAttribute("src") !== "/static/gomoku/pieces/" + color + ".png") {
+        piece.setAttribute("src", "/static/gomoku/pieces/" + color + ".png")
+        if (!isMyTurn) return
+
+        Notification.requestPermission().then((result) => {
+            console.log(result);
+
+            const text = `Your turn!`;
+            const notification = new Notification("Gomoku", { body: text });
+        });
+    }
 }
 
 let isMyTurn = false;
