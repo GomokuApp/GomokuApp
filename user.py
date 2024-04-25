@@ -5,7 +5,7 @@ import gomoku
 
 
 class User:
-    last_checkin: float = time()
+    last_checkin: float
 
     def refresh(self) -> None:
         self.last_checkin = time()
