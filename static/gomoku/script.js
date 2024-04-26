@@ -1,4 +1,10 @@
-Notification.requestPermission()
+var canRequestPermission = true;
+
+try {
+    Notification.requestPermission()
+} catch (e) {
+    canRequestPermission = false;
+}
 
 function refresh() {
     fetch("/gomoku/api/"+ gameId + "/refresh")
@@ -29,6 +35,8 @@ function renderPiece(row, column, color) {
     if (piece.getAttribute("src") !== "/static/gomoku/pieces/" + color + ".png") {
         piece.setAttribute("src", "/static/gomoku/pieces/" + color + ".png")
         if (!isMyTurn) return
+
+        if (!canRequestPermission) return;
 
         Notification.requestPermission().then((result) => {
             console.log(result);
